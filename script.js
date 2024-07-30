@@ -1,16 +1,26 @@
-const url = 'https://weather-by-api-ninjas.p.rapidapi.com/v1/weather?city=Seattle';
-const options = {
-	method: 'GET',
-	headers: {
-		'x-rapidapi-key': '3be9038ff1mshfe6b4e63e299a25p157364jsna90515af9724',
-		'x-rapidapi-host': 'weather-by-api-ninjas.p.rapidapi.com'
-	}
-};
+document.addEventListener("DOMContentLoaded", (event) => {
+  const apiKey = "30e35386302781ac4f90b83ec33019ad";
+  const apiUrl = "https://api.openweathermap.org/data/2.5/weather";
+  const city = "mumbai"//prompt("enter the city name"); // You can change the city or get it dynamically
 
-try {
-	const response = await fetch(url, options);
-	const result = await response.text();
-	console.log(result);
-} catch (error) {
-	console.error(error);
-}
+  
+
+  fetch(`${apiUrl}?q=${city}&appid=${apiKey}&units=metric`)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      //console.log(data.weather[0].main)
+      document.getElementById("location").textContent =
+        data.name + ", " + data.sys.country;
+      document.getElementById("description").textContent =
+        data.weather[0].description;
+      document.getElementById("temp").textContent = `${data.main.temp} °C`;
+      document.getElementById("humidity").textContent = `${data.main.humidity}`;
+      document.getElementById("pressure").textContent = `${data.main.pressure} `;
+      document.getElementById("wind").textContent = `${data.wind.speed} `;
+        })
+    .catch((error) => {
+      console.error("Error fetching the weather data:", error);
+    });
+
+});
